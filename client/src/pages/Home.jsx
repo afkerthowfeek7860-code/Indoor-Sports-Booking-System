@@ -1,25 +1,183 @@
-function Hero() {
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import heroImg from "../assets/hero.png";
+
+function Home() {
   return (
-    <section className="min-h-[80vh] flex items-center justify-center bg-slate-100">
-      <div className="text-center">
-        <h1 className="text-6xl font-bold text-slate-900">
-          Welcome to
-        </h1>
+    <>
+      <Navbar />
 
-        <h2 className="text-6xl font-bold text-blue-600 mt-3">
-          Majestic Pool Club
-        </h2>
+      {/* Hero Section */}
+      <section className="bg-slate-900 min-h-screen text-white">
+        <div className="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-10 items-center">
+          
+          <div>
+            <p className="text-green-400 font-semibold mb-4">
+              #1 8-Ball Pool Club
+            </p>
 
-        <p className="mt-5 text-lg text-gray-600">
-          Reserve your 8-ball pool table online and play without waiting.
-        </p>
+            <h1 className="text-5xl md:text-7xl font-bold leading-tight">
+              Play. Compete.
+              <span className="text-blue-500"> Win.</span>
+            </h1>
 
-        <button className="bg-blue-600 text-white px-8 py-3 rounded-lg mt-6">
-          Book a Table
-        </button>
-      </div>
-    </section>
+            <p className="mt-6 text-lg text-slate-300">
+              Reserve professional 8-ball pool tables at Majestic Pool Club.
+              Enjoy premium facilities, competitive matches, and an unforgettable experience.
+            </p>
+
+            <div className="mt-8 flex gap-4">
+              <button className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-semibold">
+                Book a Table
+              </button>
+
+              <button className="border border-white hover:bg-white hover:text-slate-900 px-6 py-3 rounded-lg font-semibold">
+                View Pricing
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <img
+              src={heroImg}
+              alt="Pool Club"
+              className="rounded-3xl shadow-2xl"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* About */}
+      <section className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-6 text-center">
+          <h2 className="text-4xl font-bold text-slate-900">
+            About Majestic Pool Club
+          </h2>
+
+          <p className="mt-6 text-lg text-slate-600 max-w-3xl mx-auto">
+            Majestic Pool Club provides a premium environment for pool lovers.
+            Whether you're a beginner or a competitive player, our professional
+            tables and welcoming atmosphere offer the perfect place to play.
+          </p>
+        </div>
+      </section>
+
+      {/* Features */}
+      <section className="bg-slate-100 py-20">
+        <div className="max-w-6xl mx-auto px-6">
+
+          <h2 className="text-4xl font-bold text-center mb-12">
+            Why Choose Us
+          </h2>
+
+          <div className="grid md:grid-cols-3 gap-8">
+
+            <div className="bg-white p-8 rounded-2xl shadow-lg">
+              <h3 className="text-xl font-bold mb-3">
+                Professional Tables
+              </h3>
+              <p className="text-slate-600">
+                High-quality tournament-standard 8-ball pool tables.
+              </p>
+            </div>
+
+            <div className="bg-white p-8 rounded-2xl shadow-lg">
+              <h3 className="text-xl font-bold mb-3">
+                Easy Booking
+              </h3>
+              <p className="text-slate-600">
+                Reserve your table online in seconds.
+              </p>
+            </div>
+
+            <div className="bg-white p-8 rounded-2xl shadow-lg">
+              <h3 className="text-xl font-bold mb-3">
+                Affordable Pricing
+              </h3>
+              <p className="text-slate-600">
+                Competitive rates for casual and professional players.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* Tables */}
+      <section className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-6">
+
+          <h2 className="text-4xl font-bold text-center mb-12">
+            Available Tables
+          </h2>
+
+          <div className="grid md:grid-cols-3 gap-8">
+
+            {[1, 2, 3].map((table) => (
+              <div
+                key={table}
+                className="border rounded-2xl p-8 shadow-md hover:shadow-xl transition"
+              >
+                <h3 className="text-2xl font-bold">
+                  Table {table}
+                </h3>
+
+                <p className="mt-3 text-slate-600">
+                  Professional 8-ball pool table.
+                </p>
+
+                <p className="mt-4 text-green-600 font-bold">
+                  Rs. 500 / Hour
+                </p>
+
+                <button className="mt-6 bg-blue-600 text-white px-5 py-2 rounded-lg">
+                  Book Now
+                </button>
+              </div>
+            ))}
+
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="bg-slate-900 text-white py-20">
+        <div className="max-w-6xl mx-auto px-6">
+
+          <h2 className="text-4xl font-bold text-center mb-12">
+            What Our Players Say
+          </h2>
+
+          <div className="grid md:grid-cols-3 gap-8">
+
+            <div className="bg-slate-800 p-6 rounded-xl">
+              ⭐⭐⭐⭐⭐
+              <p className="mt-4">
+                Best pool club I've ever visited.
+              </p>
+            </div>
+
+            <div className="bg-slate-800 p-6 rounded-xl">
+              ⭐⭐⭐⭐⭐
+              <p className="mt-4">
+                Professional tables and great atmosphere.
+              </p>
+            </div>
+
+            <div className="bg-slate-800 p-6 rounded-xl">
+              ⭐⭐⭐⭐⭐
+              <p className="mt-4">
+                Online booking makes everything easy.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </>
   );
 }
 
-export default Hero;
+export default Home;
