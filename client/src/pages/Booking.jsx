@@ -1,5 +1,5 @@
-import greenTable from "../assets/images/green-table.jpg";
-import blueTable from "../assets/images/blue-table.jpg";
+import greenTable from "../assets/images/green-table.png";
+import blueTable from "../assets/images/blue-table.png";
 
 function Booking() {
   return (
