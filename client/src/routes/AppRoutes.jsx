@@ -6,6 +6,7 @@ import Register from "../pages/Register";
 import Booking from "../pages/Booking";
 import UserDashboard from "../pages/UserDashboard";
 import AdminDashboard from "../pages/AdminDashboard";
+import TableReservation from "../pages/TableReservation";
 
 function AppRoutes() {
   return (
@@ -17,6 +18,7 @@ function AppRoutes() {
         <Route path="/booking" element={<Booking />} />
         <Route path="/dashboard" element={<UserDashboard />} />
         <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/booking/:tableType" element={<TableReservation />} />
       </Routes>
     </BrowserRouter>
   );

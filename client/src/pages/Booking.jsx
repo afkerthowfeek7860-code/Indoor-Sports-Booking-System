@@ -1,8 +1,10 @@
 import Navbar from "../components/Navbar";
 import greenTable from "../assets/images/green-table.png";
 import blueTable from "../assets/images/blue-table.png";
+import { useNavigate } from "react-router-dom";
 
 function Booking() {
+  const navigate = useNavigate();
   return (
 
     <>
@@ -75,7 +77,10 @@ function Booking() {
                 </div>
               </div>
 
-              <button className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-semibold transition">
+             <button
+                onClick={() => navigate("/booking/green")}
+                className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-semibold transition"
+              >
                 Book Green Table
               </button>
 
@@ -124,7 +129,10 @@ function Booking() {
                 </div>
               </div>
 
-              <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold transition">
+              <button
+                onClick={() => navigate("/booking/blue")}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold transition"
+              >
                 Book Blue Table
               </button>
 
