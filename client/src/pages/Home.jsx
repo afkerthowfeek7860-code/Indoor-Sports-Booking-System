@@ -4,13 +4,20 @@ import Footer from "../components/Footer";
 import heroImg from "../assets/hero.png";
 import Register from "./Register";
 import RegisterModal from "../components/RegisterModal";
+import Login from "./Login";
+import LoginModal from "../components/LoginModal";
 
 function Home() {
   const [showRegister, setShowRegister] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+  
 
   return (
     <>
-      <Navbar openRegister={() => setShowRegister(true)} />
+      <Navbar
+        openRegister={() => setShowRegister(true)}
+        openLogin={() => setShowLogin(true)}
+      />
 
       <RegisterModal
         isOpen={showRegister}
@@ -18,6 +25,13 @@ function Home() {
       >
         <Register />
       </RegisterModal>
+
+      <LoginModal
+        isOpen={showLogin}
+        onClose={() => setShowLogin(false)}
+      >
+        <Login />
+      </LoginModal>
 
       {/* Hero Section */}
       <section className="bg-slate-900 min-h-screen text-white">

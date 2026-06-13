@@ -1,25 +1,30 @@
 function Login() {
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="shadow-lg p-8 rounded-xl w-[400px]">
-        <h2 className="text-3xl font-bold mb-5">Login</h2>
+    <div>
+      <h2 className="text-3xl font-bold mb-5 text-center">
+        Login
+      </h2>
 
+      <form className="space-y-4">
         <input
           type="email"
           placeholder="Email"
-          className="border w-full p-3 mb-3 rounded"
+          className="w-full border p-3 rounded-lg"
         />
 
         <input
           type="password"
           placeholder="Password"
-          className="border w-full p-3 mb-3 rounded"
+          className="w-full border p-3 rounded-lg"
         />
 
-        <button className="bg-blue-600 text-white w-full py-3 rounded">
+        <button
+          type="submit"
+          className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700"
+        >
           Login
         </button>
-      </div>
+      </form>
     </div>
   );
 }
