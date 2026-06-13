@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 function Navbar({ openRegister, openLogin }) {
   return (
-    <nav className="bg-slate-900 text-white px-8 py-4 flex justify-between items-center">
+    <nav className="sticky top-0 z-50 bg-slate-900 text-white px-8 py-4 flex justify-between items-center">
       <h1 className="text-2xl font-bold text-blue-500">
         Majestic Pool Club
       </h1>
