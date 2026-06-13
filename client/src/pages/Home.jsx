@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import heroImg from "../assets/hero.png";
+import heroBg from "../assets/hero-bg.png";
 import Register from "./Register";
 import RegisterModal from "../components/RegisterModal";
 import Login from "./Login";
@@ -34,8 +34,14 @@ function Home() {
       </LoginModal>
 
       {/* Hero Section */}
-      <section className="bg-slate-900 min-h-screen text-white">
-        <div className="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-10 items-center">
+      <section
+          className="relative min-h-screen text-white bg-cover bg-center"
+          style={{
+            backgroundImage: `url(${heroBg})`,
+          }}
+      >
+        <div className="absolute inset-0 bg-black/70"></div>
+        <div className="relative z-10 max-w-4xl mx-auto px-6 py-32">
           
           <div>
             <p className="text-green-400 font-semibold mb-4">
@@ -61,14 +67,6 @@ function Home() {
                 View Pricing
               </button>
             </div>
-          </div>
-
-          <div>
-            <img
-              src={heroImg}
-              alt="Pool Club"
-              className="rounded-3xl shadow-2xl"
-            />
           </div>
         </div>
       </section>
