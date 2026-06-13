@@ -1,8 +1,16 @@
+import Navbar from "../components/Navbar";
 import greenTable from "../assets/images/green-table.png";
 import blueTable from "../assets/images/blue-table.png";
 
 function Booking() {
   return (
+
+    <>
+    <Navbar 
+      openRegister={() => {}}
+      openLogin={() => {}}
+    />
+
     <section className="min-h-screen bg-slate-900 py-24">
       <div className="max-w-7xl mx-auto px-6">
 
@@ -59,7 +67,7 @@ function Booking() {
               <div className="flex justify-between items-center mb-6">
                 <div>
                   <span className="text-3xl font-bold text-green-400">
-                    Rs.500
+                    Rs.1000
                   </span>
                   <span className="text-slate-400 ml-2">
                     / hour
@@ -108,7 +116,7 @@ function Booking() {
               <div className="flex justify-between items-center mb-6">
                 <div>
                   <span className="text-3xl font-bold text-blue-400">
-                    Rs.500
+                    Rs.1000
                   </span>
                   <span className="text-slate-400 ml-2">
                     / hour
@@ -127,6 +135,8 @@ function Booking() {
 
       </div>
     </section>
+
+    </>
   );
 }
 
