@@ -1,11 +1,23 @@
+import { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import heroImg from "../assets/hero.png";
+import Register from "./Register";
+import RegisterModal from "../components/RegisterModal";
 
 function Home() {
+  const [showRegister, setShowRegister] = useState(false);
+
   return (
     <>
-      <Navbar />
+      <Navbar openRegister={() => setShowRegister(true)} />
+
+      <RegisterModal
+        isOpen={showRegister}
+        onClose={() => setShowRegister(false)}
+      >
+        <Register />
+      </RegisterModal>
 
       {/* Hero Section */}
       <section className="bg-slate-900 min-h-screen text-white">

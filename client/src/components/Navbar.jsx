@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-function Navbar() {
+function Navbar({ openRegister }) {
   return (
     <nav className="bg-slate-900 text-white px-8 py-4 flex justify-between items-center">
       <h1 className="text-2xl font-bold text-blue-500">
@@ -10,6 +10,11 @@ function Navbar() {
       <div className="space-x-6">
         <Link to="/">Home</Link>
         <Link to="/booking">Book Now</Link>
+
+        <button onClick={openRegister}>
+          Sign Up
+        </button>
+
         <Link to="/login">Login</Link>
       </div>
     </nav>
