@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Navbar from "../components/Navbar";
 
@@ -7,10 +7,10 @@ import blueTable from "../assets/images/blue-table.png";
 
 function TableReservation() {
   const { tableType } = useParams();
+  const navigate = useNavigate();
 
-  const [selectedSlot, setSelectedSlot] = useState("");
+  const [selectedIndex, setSelectedIndex] = useState(null);
   const [hours, setHours] = useState(1);
-  const [paymentMethod, setPaymentMethod] = useState("cash");
 
   const image =
     tableType === "green"
@@ -21,8 +21,6 @@ function TableReservation() {
     tableType === "green"
       ? "Green Table"
       : "Blue Table";
-
-  const pricePerHour = 1000;
 
   const slots = [
     "2:00 PM",
@@ -39,6 +37,34 @@ function TableReservation() {
     "1:00 AM",
   ];
 
+  const calculateTotal = () => {
+    if (selectedIndex === null) return 0;
+
+    let total = 0;
+
+    for (let i = 0; i < hours; i++) {
+      const slotIndex = selectedIndex + i;
+
+      if (slotIndex >= slots.length) break;
+
+      if (slotIndex < 4) {
+        total += 800;
+      } else {
+        total += 1000;
+      }
+    }
+
+    return total;
+  };
+
+  const highlightedSlots = [];
+
+  if (selectedIndex !== null) {
+    for (let i = 0; i < hours; i++) {
+      highlightedSlots.push(selectedIndex + i);
+    }
+  }
+
   return (
     <>
       {/* Sticky Navbar */}
@@ -49,17 +75,26 @@ function TableReservation() {
         />
       </div>
 
-      {/* Background */}
       <section
         className="min-h-screen bg-cover bg-center relative"
         style={{
           backgroundImage: `url(${image})`,
         }}
       >
-        {/* Overlay */}
+        {/* Dark Overlay */}
         <div className="absolute inset-0 bg-black/70"></div>
 
         <div className="relative z-10 max-w-6xl mx-auto px-6 py-20">
+
+          {/* Close Button */}
+          <div className="flex justify-end mb-6">
+            <button
+              onClick={() => navigate("/booking")}
+              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-semibold transition"
+            >
+              ✕ Close
+            </button>
+          </div>
 
           {/* Heading */}
           <h1 className="text-5xl font-bold text-white mb-8">
@@ -81,85 +116,82 @@ function TableReservation() {
 
             {/* Time Slots */}
             <label className="font-semibold text-white block mb-4">
-              Select Time Slot
+              Select Starting Time Slot
             </label>
 
             <div className="grid md:grid-cols-4 gap-3 mb-8">
-              {slots.map((slot) => (
-                <button
-                  key={slot}
-                  onClick={() => setSelectedSlot(slot)}
-                  className={`p-3 rounded-lg border transition ${
-                    selectedSlot === slot
-                      ? "bg-blue-600 text-white border-blue-600"
-                      : "bg-slate-900 text-white border-slate-700 hover:border-green-500"
-                  }`}
-                >
-                  {slot}
-                </button>
-              ))}
+              {slots.map((slot, index) => {
+                const isHighlighted =
+                  highlightedSlots.includes(index);
+
+                return (
+                  <button
+                    key={slot}
+                    onClick={() => setSelectedIndex(index)}
+                    className={`p-3 rounded-lg border transition ${
+                      isHighlighted
+                        ? "bg-blue-600 text-white border-blue-600"
+                        : "bg-slate-900 text-white border-slate-700 hover:border-green-500"
+                    }`}
+                  >
+                    {slot}
+                  </button>
+                );
+              })}
             </div>
 
-            {/* Duration */}
-            <label className="font-semibold text-white block mb-2">
-              Duration
+            {/* Hours Selector */}
+            <label className="font-semibold text-white block mb-4">
+              Number of Hours
             </label>
 
-            <select
-              value={hours}
-              onChange={(e) =>
-                setHours(Number(e.target.value))
-              }
-              className="bg-slate-900 border border-slate-700 text-white p-3 rounded-lg w-full mb-8"
-            >
-              <option value={1}>1 Hour</option>
-              <option value={2}>2 Hours</option>
-              <option value={3}>3 Hours</option>
-              <option value={4}>4 Hours</option>
-              <option value={5}>5 Hours</option>
-              <option value={6}>6 Hours</option>
-            </select>
-
-            {/* Payment Method */}
-            <label className="font-semibold text-white block mb-3">
-              Payment Method
-            </label>
-
-            <div className="grid md:grid-cols-3 gap-3 mb-8">
-
+            <div className="flex items-center gap-4 mb-8">
               <button
-                onClick={() => setPaymentMethod("cash")}
-                className={`p-4 rounded-xl border transition ${
-                  paymentMethod === "cash"
-                    ? "bg-green-600 text-white"
-                    : "bg-slate-900 text-white border-slate-700"
-                }`}
+                onClick={() =>
+                  setHours((prev) =>
+                    prev > 1 ? prev - 1 : 1
+                  )
+                }
+                className="w-12 h-12 bg-red-600 rounded-xl text-white text-2xl"
               >
-                Cash
+                -
               </button>
 
-              <button
-                onClick={() => setPaymentMethod("card")}
-                className={`p-4 rounded-xl border transition ${
-                  paymentMethod === "card"
-                    ? "bg-blue-600 text-white"
-                    : "bg-slate-900 text-white border-slate-700"
-                }`}
-              >
-                Credit / Debit Card
-              </button>
+              <div className="text-white text-2xl font-bold">
+                {hours} Hour(s)
+              </div>
 
               <button
-                onClick={() => setPaymentMethod("payhere")}
-                className={`p-4 rounded-xl border transition ${
-                  paymentMethod === "payhere"
-                    ? "bg-yellow-500 text-black"
-                    : "bg-slate-900 text-white border-slate-700"
-                }`}
+                onClick={() =>
+                  setHours((prev) =>
+                    prev < 6 ? prev + 1 : 6
+                  )
+                }
+                className="w-12 h-12 bg-green-600 rounded-xl text-white text-2xl"
               >
-                PayHere
+                +
               </button>
+            </div>
 
+            {/* Pricing Info */}
+            <div className="bg-slate-900 border border-slate-700 rounded-xl p-4 mb-8">
+              <h3 className="text-white font-bold mb-2">
+                Pricing
+              </h3>
+
+              <p className="text-slate-300">
+                2:00 PM – 5:00 PM :
+                <span className="text-green-400 font-bold">
+                  {" "}Rs.800/hour
+                </span>
+              </p>
+
+              <p className="text-slate-300">
+                6:00 PM – 1:00 AM :
+                <span className="text-blue-400 font-bold">
+                  {" "}Rs.1000/hour
+                </span>
+              </p>
             </div>
 
             {/* Booking Summary */}
@@ -179,9 +211,11 @@ function TableReservation() {
                 </div>
 
                 <div className="flex justify-between">
-                  <span>Time Slot</span>
+                  <span>Starting Slot</span>
                   <span className="font-semibold text-white">
-                    {selectedSlot || "Not Selected"}
+                    {selectedIndex !== null
+                      ? slots[selectedIndex]
+                      : "Not Selected"}
                   </span>
                 </div>
 
@@ -194,8 +228,8 @@ function TableReservation() {
 
                 <div className="flex justify-between">
                   <span>Payment Method</span>
-                  <span className="font-semibold text-white capitalize">
-                    {paymentMethod}
+                  <span className="font-semibold text-white">
+                    Credit / Debit Card
                   </span>
                 </div>
 
@@ -205,14 +239,14 @@ function TableReservation() {
                   </span>
 
                   <span className="text-2xl font-bold text-green-500">
-                    Rs.{hours * pricePerHour}
+                    Rs.{calculateTotal()}
                   </span>
                 </div>
 
               </div>
 
               <button className="mt-6 w-full bg-green-600 hover:bg-green-700 text-white py-4 rounded-xl font-semibold transition">
-                Proceed to Payment
+                Proceed to Card Payment
               </button>
 
             </div>
