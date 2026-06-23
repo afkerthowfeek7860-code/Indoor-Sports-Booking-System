@@ -245,9 +245,12 @@ function TableReservation() {
 
               </div>
 
-              <button className="mt-6 w-full bg-green-600 hover:bg-green-700 text-white py-4 rounded-xl font-semibold transition">
-                Proceed to Card Payment
-              </button>
+              <button
+                    onClick={() => navigate("/payment")}
+                    className="mt-6 w-full bg-green-600 hover:bg-green-700 text-white py-4 rounded-xl font-semibold transition"
+                  >
+                    Proceed to Card Payment
+                  </button>
 
             </div>
 

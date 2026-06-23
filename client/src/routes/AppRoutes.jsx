@@ -7,6 +7,8 @@ import Booking from "../pages/Booking";
 import UserDashboard from "../pages/UserDashboard";
 import AdminDashboard from "../pages/AdminDashboard";
 import TableReservation from "../pages/TableReservation";
+import Payment from "../pages/Payment";
+
 
 function AppRoutes() {
   return (
@@ -19,6 +21,7 @@ function AppRoutes() {
         <Route path="/dashboard" element={<UserDashboard />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/booking/:tableType" element={<TableReservation />} />
+        <Route path="/payment" element={<Payment />} /> 
       </Routes>
     </BrowserRouter>
   );
