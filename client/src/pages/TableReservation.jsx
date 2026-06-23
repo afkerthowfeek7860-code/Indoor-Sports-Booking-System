@@ -10,6 +10,7 @@ function TableReservation() {
 
   const [selectedSlot, setSelectedSlot] = useState("");
   const [hours, setHours] = useState(1);
+  const [paymentMethod, setPaymentMethod] = useState("cash");
 
   const image =
     tableType === "green"
@@ -40,6 +41,7 @@ function TableReservation() {
 
   return (
     <>
+      {/* Sticky Navbar */}
       <div className="sticky top-0 z-50">
         <Navbar
           openRegister={() => {}}
@@ -47,22 +49,24 @@ function TableReservation() {
         />
       </div>
 
+      {/* Background */}
       <section
         className="min-h-screen bg-cover bg-center relative"
         style={{
           backgroundImage: `url(${image})`,
         }}
       >
-        {/* Dark Overlay */}
+        {/* Overlay */}
         <div className="absolute inset-0 bg-black/70"></div>
 
         <div className="relative z-10 max-w-6xl mx-auto px-6 py-20">
 
+          {/* Heading */}
           <h1 className="text-5xl font-bold text-white mb-8">
             {tableName} Reservation
           </h1>
 
-          {/* Reservation Form */}
+          {/* Reservation Card */}
           <div className="bg-slate-800 border border-slate-700 rounded-3xl p-8 shadow-2xl">
 
             {/* Date */}
@@ -116,43 +120,99 @@ function TableReservation() {
               <option value={6}>6 Hours</option>
             </select>
 
-            {/* Summary */}
+            {/* Payment Method */}
+            <label className="font-semibold text-white block mb-3">
+              Payment Method
+            </label>
+
+            <div className="grid md:grid-cols-3 gap-3 mb-8">
+
+              <button
+                onClick={() => setPaymentMethod("cash")}
+                className={`p-4 rounded-xl border transition ${
+                  paymentMethod === "cash"
+                    ? "bg-green-600 text-white"
+                    : "bg-slate-900 text-white border-slate-700"
+                }`}
+              >
+                Cash
+              </button>
+
+              <button
+                onClick={() => setPaymentMethod("card")}
+                className={`p-4 rounded-xl border transition ${
+                  paymentMethod === "card"
+                    ? "bg-blue-600 text-white"
+                    : "bg-slate-900 text-white border-slate-700"
+                }`}
+              >
+                Credit / Debit Card
+              </button>
+
+              <button
+                onClick={() => setPaymentMethod("payhere")}
+                className={`p-4 rounded-xl border transition ${
+                  paymentMethod === "payhere"
+                    ? "bg-yellow-500 text-black"
+                    : "bg-slate-900 text-white border-slate-700"
+                }`}
+              >
+                PayHere
+              </button>
+
+            </div>
+
+            {/* Booking Summary */}
             <div className="bg-slate-900 border border-slate-700 rounded-2xl p-6">
 
               <h2 className="text-2xl font-bold text-white mb-4">
                 Booking Summary
               </h2>
 
-              <p className="text-slate-300">
-                Table:
-                <strong className="text-white">
-                  {" "}
-                  {tableName}
-                </strong>
-              </p>
+              <div className="space-y-3 text-slate-300">
 
-              <p className="text-slate-300">
-                Time:
-                <strong className="text-white">
-                  {" "}
-                  {selectedSlot || "Not Selected"}
-                </strong>
-              </p>
+                <div className="flex justify-between">
+                  <span>Table</span>
+                  <span className="font-semibold text-white">
+                    {tableName}
+                  </span>
+                </div>
 
-              <p className="text-slate-300">
-                Duration:
-                <strong className="text-white">
-                  {" "}
-                  {hours} Hour(s)
-                </strong>
-              </p>
+                <div className="flex justify-between">
+                  <span>Time Slot</span>
+                  <span className="font-semibold text-white">
+                    {selectedSlot || "Not Selected"}
+                  </span>
+                </div>
 
-              <p className="text-2xl font-bold text-green-500 mt-4">
-                Total: Rs.{hours * pricePerHour}
-              </p>
+                <div className="flex justify-between">
+                  <span>Duration</span>
+                  <span className="font-semibold text-white">
+                    {hours} Hour(s)
+                  </span>
+                </div>
 
-              <button className="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold transition">
-                Confirm Booking
+                <div className="flex justify-between">
+                  <span>Payment Method</span>
+                  <span className="font-semibold text-white capitalize">
+                    {paymentMethod}
+                  </span>
+                </div>
+
+                <div className="border-t border-slate-700 pt-4 mt-4 flex justify-between">
+                  <span className="text-lg">
+                    Total Amount
+                  </span>
+
+                  <span className="text-2xl font-bold text-green-500">
+                    Rs.{hours * pricePerHour}
+                  </span>
+                </div>
+
+              </div>
+
+              <button className="mt-6 w-full bg-green-600 hover:bg-green-700 text-white py-4 rounded-xl font-semibold transition">
+                Proceed to Payment
               </button>
 
             </div>
