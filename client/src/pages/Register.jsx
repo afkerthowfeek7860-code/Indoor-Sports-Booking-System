@@ -21,6 +21,9 @@ function Register() {
         password,
       });
 
+      console.log("DATA:", data);
+      console.log("ERROR:", error);
+
       if (error) {
         alert(error.message);
         return;
