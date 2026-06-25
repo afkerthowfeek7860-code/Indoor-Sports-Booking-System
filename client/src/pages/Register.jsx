@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { supabase } from "../services/supabase";
+import { toast } from "react-toastify";
 
-function Register() {
+function Register({ onRegisterSuccess }) {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -11,7 +12,7 @@ function Register() {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
+      toast.error("Passwords do not match");
       return;
     }
 
@@ -25,7 +26,7 @@ function Register() {
       console.log("ERROR:", error);
 
       if (error) {
-        alert(error.message);
+        toast.error(error.message);
         return;
       }
 
@@ -40,18 +41,28 @@ function Register() {
 
         if (profileError) {
           console.error(profileError);
+          toast.error("Failed to update profile.");
+          return;
         }
       }
 
-      alert("Registration successful!");
+      // Success notification
+      toast.success("Registration Successful!");
 
+      // Clear form
       setFullName("");
       setEmail("");
       setPassword("");
       setConfirmPassword("");
+
+      // Close the registration modal
+      if (onRegisterSuccess) {
+        onRegisterSuccess();
+      }
+
     } catch (err) {
       console.error("Register Error:", err);
-      alert(JSON.stringify(err, null, 2));
+      toast.error("Something went wrong!");
     }
   };
 
@@ -100,7 +111,7 @@ function Register() {
 
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700"
+          className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition"
         >
           Register
         </button>
