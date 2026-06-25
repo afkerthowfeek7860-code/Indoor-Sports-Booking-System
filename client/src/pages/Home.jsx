@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { supabase } from "../services/supabase";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import heroBg from "../assets/hero-bg.png";
@@ -9,59 +9,30 @@ import Login from "./Login";
 import LoginModal from "../components/LoginModal";
 
 function Home() {
+  const navigate = useNavigate();
+
   const [showRegister, setShowRegister] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    // Get current logged in user
-    supabase.auth.getUser().then(({ data }) => {
-      setUser(data.user);
-    });
-
-    // Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
-      setUser(session?.user ?? null);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
 
   return (
     <>
       <Navbar
-        user={user}
         openRegister={() => setShowRegister(true)}
         openLogin={() => setShowLogin(true)}
       />
 
-      {/* Register Modal */}
       <RegisterModal
         isOpen={showRegister}
         onClose={() => setShowRegister(false)}
       >
-        <Register
-          onRegisterSuccess={() => {
-            setShowRegister(false);
-
-            // Uncomment if you want to open login automatically
-            // setShowLogin(true);
-          }}
-        />
+        <Register />
       </RegisterModal>
 
-      {/* Login Modal */}
       <LoginModal
         isOpen={showLogin}
         onClose={() => setShowLogin(false)}
       >
-        <Login
-          onLoginSuccess={() => {
-            setShowLogin(false);
-          }}
-        />
+        <Login />
       </LoginModal>
 
       {/* Hero Section */}
@@ -74,31 +45,35 @@ function Home() {
         <div className="absolute inset-0 bg-black/70"></div>
 
         <div className="relative z-10 max-w-4xl mx-auto px-6 py-32">
-          <div>
-            <p className="text-green-400 font-semibold mb-4">
-              #1 8-Ball Pool Club
-            </p>
+          <p className="text-green-400 font-semibold mb-4">
+            #1 8-Ball Pool Club
+          </p>
 
-            <h1 className="text-5xl md:text-7xl font-bold leading-tight">
-              Play. Compete.
-              <span className="text-blue-500"> Win.</span>
-            </h1>
+          <h1 className="text-5xl md:text-7xl font-bold leading-tight">
+            Play. Compete.
+            <span className="text-blue-500"> Win.</span>
+          </h1>
 
-            <p className="mt-6 text-lg text-slate-300">
-              Reserve professional 8-ball pool tables at Majestic Pool Club.
-              Enjoy premium facilities, competitive matches, and an unforgettable
-              experience.
-            </p>
+          <p className="mt-6 text-lg text-slate-300">
+            Reserve professional 8-ball pool tables at Majestic Pool Club.
+            Enjoy premium facilities, competitive matches, and an unforgettable
+            experience.
+          </p>
 
-            <div className="mt-8 flex gap-4">
-              <button className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-semibold transition">
-                Book a Table
-              </button>
+          <div className="mt-8 flex gap-4">
+            <button
+              onClick={() => navigate("/booking")}
+              className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-semibold transition"
+            >
+              Book a Table
+            </button>
 
-              <button className="border border-white hover:bg-white hover:text-slate-900 px-6 py-3 rounded-lg font-semibold transition">
-                View Pricing
-              </button>
-            </div>
+            <button
+              onClick={() => navigate("/booking")}
+              className="border border-white hover:bg-white hover:text-slate-900 px-6 py-3 rounded-lg font-semibold transition"
+            >
+              View Pricing
+            </button>
           </div>
         </div>
       </section>

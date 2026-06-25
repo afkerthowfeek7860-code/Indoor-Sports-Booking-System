@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import { supabase } from "../services/supabase";
+import { useAuth } from "../context/AuthContext";
 
-function Navbar({ user, openRegister, openLogin }) {
+function Navbar({ openRegister, openLogin }) {
+  const { user } = useAuth();
+
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
 
@@ -32,12 +35,18 @@ function Navbar({ user, openRegister, openLogin }) {
         </Link>
 
         {user ? (
-          <button
-            onClick={handleLogout}
-            className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition"
-          >
-            Logout
-          </button>
+          <>
+            <span className="text-green-400 font-semibold">
+              {user.email}
+            </span>
+
+            <button
+              onClick={handleLogout}
+              className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition"
+            >
+              Logout
+            </button>
+          </>
         ) : (
           <>
             <button
