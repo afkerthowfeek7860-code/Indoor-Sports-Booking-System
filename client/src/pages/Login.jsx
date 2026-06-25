@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { supabase } from "../services/supabase";
+import { toast } from "react-toastify";
 
-function Login() {
+function Login({ onLoginSuccess }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -9,26 +10,32 @@ function Login() {
     e.preventDefault();
 
     try {
-      const { data, error } =
-        await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
       if (error) {
-        alert(error.message);
+        toast.error(error.message);
         return;
       }
 
       console.log("Logged in user:", data.user);
 
-      alert("Login successful!");
+      // Show success notification
+      toast.success("Login Successful!");
 
+      // Clear form
       setEmail("");
       setPassword("");
+
+      // Close the login modal
+      if (onLoginSuccess) {
+        onLoginSuccess();
+      }
     } catch (err) {
       console.error(err);
-      alert("Something went wrong");
+      toast.error("Something went wrong");
     }
   };
 
@@ -59,7 +66,7 @@ function Login() {
 
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700"
+          className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition"
         >
           Login
         </button>

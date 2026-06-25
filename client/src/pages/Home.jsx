@@ -10,7 +10,6 @@ import LoginModal from "../components/LoginModal";
 function Home() {
   const [showRegister, setShowRegister] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
-  
 
   return (
     <>
@@ -19,30 +18,44 @@ function Home() {
         openLogin={() => setShowLogin(true)}
       />
 
+      {/* Register Modal */}
       <RegisterModal
         isOpen={showRegister}
         onClose={() => setShowRegister(false)}
       >
-        <Register />
+        <Register
+          onRegisterSuccess={() => {
+            setShowRegister(false);
+
+            // Optional:
+            // Automatically open login after registration
+            // setShowLogin(true);
+          }}
+        />
       </RegisterModal>
 
+      {/* Login Modal */}
       <LoginModal
         isOpen={showLogin}
         onClose={() => setShowLogin(false)}
       >
-        <Login />
+        <Login
+          onLoginSuccess={() => {
+            setShowLogin(false);
+          }}
+        />
       </LoginModal>
 
       {/* Hero Section */}
       <section
-          className="relative min-h-screen text-white bg-cover bg-center"
-          style={{
-            backgroundImage: `url(${heroBg})`,
-          }}
+        className="relative min-h-screen text-white bg-cover bg-center"
+        style={{
+          backgroundImage: `url(${heroBg})`,
+        }}
       >
         <div className="absolute inset-0 bg-black/70"></div>
+
         <div className="relative z-10 max-w-4xl mx-auto px-6 py-32">
-          
           <div>
             <p className="text-green-400 font-semibold mb-4">
               #1 8-Ball Pool Club
@@ -55,15 +68,16 @@ function Home() {
 
             <p className="mt-6 text-lg text-slate-300">
               Reserve professional 8-ball pool tables at Majestic Pool Club.
-              Enjoy premium facilities, competitive matches, and an unforgettable experience.
+              Enjoy premium facilities, competitive matches, and an unforgettable
+              experience.
             </p>
 
             <div className="mt-8 flex gap-4">
-              <button className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-semibold">
+              <button className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-semibold transition">
                 Book a Table
               </button>
 
-              <button className="border border-white hover:bg-white hover:text-slate-900 px-6 py-3 rounded-lg font-semibold">
+              <button className="border border-white hover:bg-white hover:text-slate-900 px-6 py-3 rounded-lg font-semibold transition">
                 View Pricing
               </button>
             </div>
@@ -89,17 +103,16 @@ function Home() {
       {/* Features */}
       <section className="bg-slate-100 py-20">
         <div className="max-w-6xl mx-auto px-6">
-
           <h2 className="text-4xl font-bold text-center mb-12">
             Why Choose Us
           </h2>
 
           <div className="grid md:grid-cols-3 gap-8">
-
             <div className="bg-white p-8 rounded-2xl shadow-lg">
               <h3 className="text-xl font-bold mb-3">
                 Professional Tables
               </h3>
+
               <p className="text-slate-600">
                 High-quality tournament-standard 8-ball pool tables.
               </p>
@@ -109,6 +122,7 @@ function Home() {
               <h3 className="text-xl font-bold mb-3">
                 Easy Booking
               </h3>
+
               <p className="text-slate-600">
                 Reserve your table online in seconds.
               </p>
@@ -118,11 +132,11 @@ function Home() {
               <h3 className="text-xl font-bold mb-3">
                 Affordable Pricing
               </h3>
+
               <p className="text-slate-600">
                 Competitive rates for casual and professional players.
               </p>
             </div>
-
           </div>
         </div>
       </section>
@@ -130,15 +144,14 @@ function Home() {
       {/* Testimonials */}
       <section className="bg-slate-900 text-white py-20">
         <div className="max-w-6xl mx-auto px-6">
-
           <h2 className="text-4xl font-bold text-center mb-12">
             What Our Players Say
           </h2>
 
           <div className="grid md:grid-cols-3 gap-8">
-
             <div className="bg-slate-800 p-6 rounded-xl">
               ⭐⭐⭐⭐⭐
+
               <p className="mt-4">
                 Best pool club I've ever visited.
               </p>
@@ -146,6 +159,7 @@ function Home() {
 
             <div className="bg-slate-800 p-6 rounded-xl">
               ⭐⭐⭐⭐⭐
+
               <p className="mt-4">
                 Professional tables and great atmosphere.
               </p>
@@ -153,11 +167,11 @@ function Home() {
 
             <div className="bg-slate-800 p-6 rounded-xl">
               ⭐⭐⭐⭐⭐
+
               <p className="mt-4">
                 Online booking makes everything easy.
               </p>
             </div>
-
           </div>
         </div>
       </section>
