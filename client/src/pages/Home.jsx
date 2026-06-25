@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "../services/supabase";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import heroBg from "../assets/hero-bg.png";
@@ -10,10 +11,28 @@ import LoginModal from "../components/LoginModal";
 function Home() {
   const [showRegister, setShowRegister] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    // Get current logged in user
+    supabase.auth.getUser().then(({ data }) => {
+      setUser(data.user);
+    });
+
+    // Listen for auth changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   return (
     <>
       <Navbar
+        user={user}
         openRegister={() => setShowRegister(true)}
         openLogin={() => setShowLogin(true)}
       />
@@ -27,8 +46,7 @@ function Home() {
           onRegisterSuccess={() => {
             setShowRegister(false);
 
-            // Optional:
-            // Automatically open login after registration
+            // Uncomment if you want to open login automatically
             // setShowLogin(true);
           }}
         />
@@ -151,7 +169,6 @@ function Home() {
           <div className="grid md:grid-cols-3 gap-8">
             <div className="bg-slate-800 p-6 rounded-xl">
               ⭐⭐⭐⭐⭐
-
               <p className="mt-4">
                 Best pool club I've ever visited.
               </p>
@@ -159,7 +176,6 @@ function Home() {
 
             <div className="bg-slate-800 p-6 rounded-xl">
               ⭐⭐⭐⭐⭐
-
               <p className="mt-4">
                 Professional tables and great atmosphere.
               </p>
@@ -167,7 +183,6 @@ function Home() {
 
             <div className="bg-slate-800 p-6 rounded-xl">
               ⭐⭐⭐⭐⭐
-
               <p className="mt-4">
                 Online booking makes everything easy.
               </p>
