@@ -25,8 +25,8 @@ function AdminBookings() {
       .order("booking_date", { ascending: true });
 
     if (error) {
-      console.error(error);
-      toast.error("Unable to load bookings.");
+      console.error("Bookings Error:", error);
+      toast.error(error.message);
       setLoading(false);
       return;
     }
