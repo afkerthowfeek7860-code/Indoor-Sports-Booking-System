@@ -3,6 +3,7 @@ import { supabase } from "../services/supabase";
 import AdminSidebar from "../components/AdminSidebar";
 import AdminNavbar from "../components/AdminNavbar";
 import AdminBookings from "../components/admin/AdminBookings";
+import AdminTables from "../components/admin/AdminTables";
 
 function AdminDashboard() {
   const [active, setActive] = useState("dashboard");
@@ -162,15 +163,7 @@ function AdminDashboard() {
           )}
 
           {active === "tables" && (
-            <div className="bg-slate-800 rounded-2xl p-12 border border-slate-700 text-center">
-              <h2 className="text-3xl font-bold text-white mb-4">
-                Manage Tables
-              </h2>
-
-              <p className="text-slate-400">
-                Coming in the next step...
-              </p>
-            </div>
+            <AdminTables />
           )}
 
           {active === "users" && (
