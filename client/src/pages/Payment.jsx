@@ -46,6 +46,7 @@ function Payment() {
 
   const handlePayment = async (e) => {
     e.preventDefault();
+    console.log("Booking Data:", booking);
 
     if (
       !cardName ||
@@ -73,11 +74,17 @@ function Payment() {
       await supabase
         .from("tables")
         .select("id")
-        .eq("table_name", booking.tableName)
+        .eq("table_type", booking.tableType === "green" ? "Green" : "Blue")
         .single();
 
+    console.log("Table Data:", tableData);
+    console.log("Table Error:", tableError);
+
     if (tableError) {
+      console.error(tableError);
+
       toast.error("Unable to find selected table.");
+
       setLoading(false);
       return;
     }
@@ -93,8 +100,9 @@ function Payment() {
         total_amount: booking.totalAmount,
         booking_status: "Pending",
       });
-
-    if (error) {
+    
+      if (error) {
+      console.error("Booking Insert Error:", error);
       toast.error(error.message);
       setLoading(false);
       return;
