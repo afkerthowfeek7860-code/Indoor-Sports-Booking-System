@@ -9,6 +9,8 @@ import AdminDashboard from "../pages/AdminDashboard";
 import TableReservation from "../pages/TableReservation";
 import Payment from "../pages/Payment";
 
+import ProtectedAdminRoute from "../components/ProtectedAdminRoute";
+
 
 function AppRoutes() {
   return (
@@ -19,7 +21,14 @@ function AppRoutes() {
         <Route path="/register" element={<Register />} />
         <Route path="/booking" element={<Booking />} />
         <Route path="/dashboard" element={<UserDashboard />} />
-        <Route path="/admin" element={<AdminDashboard />} />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedAdminRoute>
+              <AdminDashboard />
+            </ProtectedAdminRoute>
+          }
+        />
         <Route path="/booking/:tableType" element={<TableReservation />} />
         <Route path="/payment" element={<Payment />} /> 
       </Routes>
