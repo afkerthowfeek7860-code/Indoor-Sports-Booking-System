@@ -128,7 +128,27 @@ const getAllUsers = async (req, res) => {
       return res.status(400).json(error);
     }
 
-    res.json(data);
+    const { data: authUsers, error: authError } =
+      await supabase.auth.admin.listUsers();
+
+    if (authError) {
+      return res.status(400).json(authError);
+    }
+
+    const users = data.map((profile) => {
+
+    const authUser = authUsers.users.find(
+      (user) => user.id === profile.id
+    );
+
+    return {
+      ...profile,
+      email: authUser?.email || "-",
+    };
+
+  });
+
+  res.json(users);
 
   } catch (err) {
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "../../services/supabase";
+import adminApi from "../../api/adminApi";
 import { toast } from "react-toastify";
 
 function AdminBookings() {
@@ -11,67 +11,91 @@ function AdminBookings() {
   }, []);
 
   const fetchBookings = async () => {
+  try {
+
     setLoading(true);
 
-    const { data, error } = await supabase
-      .from("bookings")
-      .select(`
-        *,
-        tables (
-          table_name,
-          table_type
-        )
-      `)
-      .order("booking_date", { ascending: true });
-
-    if (error) {
-      console.error("Bookings Error:", error);
-      toast.error(error.message);
-      setLoading(false);
-      return;
-    }
+    const { data } =
+      await adminApi.get("/bookings");
 
     setBookings(data);
+
+  } catch (error) {
+
+    console.error(error);
+
+    toast.error("Unable to load bookings.");
+
+  } finally {
+
     setLoading(false);
-  };
 
-  const updateBookingStatus = async (id, status) => {
-    const { error } = await supabase
-      .from("bookings")
-      .update({
-        booking_status: status,
-      })
-      .eq("id", id);
+  }
+};
 
-    if (error) {
-      toast.error(error.message);
-      return;
-    }
+  const updateBookingStatus = async (
+  id,
+  status
+) => {
 
-    toast.success(`Booking ${status}`);
-    fetchBookings();
-  };
+  try {
 
-  const deleteBooking = async (id) => {
-    const confirmDelete = window.confirm(
-      "Delete this booking?"
+    await adminApi.patch(
+      `/bookings/${id}`,
+      {
+        status,
+      }
     );
 
-    if (!confirmDelete) return;
+    toast.success(
+      `Booking ${status}`
+    );
 
-    const { error } = await supabase
-      .from("bookings")
-      .delete()
-      .eq("id", id);
-
-    if (error) {
-      toast.error(error.message);
-      return;
-    }
-
-    toast.success("Booking deleted");
     fetchBookings();
-  };
+
+  } catch (error) {
+
+    console.error(error);
+
+    toast.error(
+      "Unable to update booking."
+    );
+
+  }
+
+};
+
+  const deleteBooking = async (id) => {
+
+  const confirmDelete = window.confirm(
+    "Delete this booking?"
+  );
+
+  if (!confirmDelete) return;
+
+  try {
+
+    await adminApi.delete(
+      `/bookings/${id}`
+    );
+
+    toast.success(
+      "Booking deleted."
+    );
+
+    fetchBookings();
+
+  } catch (error) {
+
+    console.error(error);
+
+    toast.error(
+      "Unable to delete booking."
+    );
+
+  }
+
+};
 
   if (loading) {
     return (
@@ -98,6 +122,10 @@ function AdminBookings() {
 
               <th className="px-6 py-4 text-left text-white">
                 Table
+              </th>
+
+              <th className="px-6 py-4 text-left text-white">
+                Customer
               </th>
 
               <th className="px-6 py-4 text-left text-white">
@@ -139,6 +167,10 @@ function AdminBookings() {
 
                 <td className="px-6 py-4 text-white">
                   {booking.tables?.table_name}
+                </td>
+
+                <td className="px-6 py-4 text-slate-300">
+                  {booking.profiles?.full_name}
                 </td>
 
                 <td className="px-6 py-4 text-slate-300">

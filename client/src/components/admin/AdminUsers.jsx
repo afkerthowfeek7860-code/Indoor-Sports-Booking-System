@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "../../services/supabase";
+import adminApi from "../../api/adminApi";
 import { toast } from "react-toastify";
 
 function AdminUsers() {
@@ -11,44 +11,84 @@ function AdminUsers() {
   }, []);
 
   const fetchUsers = async () => {
+  try {
+
     setLoading(true);
 
-    const { data, error } = await supabase
-      .from("profiles")
-      .select("*")
-      .order("created_at", { ascending: false });
+    const { data } = await adminApi.get("/users");
 
-    if (error) {
-      toast.error(error.message);
-      setLoading(false);
-      return;
-    }
+    console.log("Users API:", data);
 
     setUsers(data);
+
+  } catch (error) {
+
+    console.error(error);
+
+    toast.error("Unable to load users.");
+
+  } finally {
+
     setLoading(false);
-  };
+
+  }
+};
 
   const changeRole = async (user) => {
-    const newRole =
-      user.role === "admin"
-        ? "customer"
-        : "admin";
 
-    const { error } = await supabase
-      .from("profiles")
-      .update({
+  const newRole =
+    user.role === "admin"
+      ? "customer"
+      : "admin";
+
+  try {
+
+    await adminApi.patch(
+      `/users/${user.id}`,
+      {
         role: newRole,
-      })
-      .eq("id", user.id);
-
-    if (error) {
-      toast.error(error.message);
-      return;
-    }
+      }
+    );
 
     toast.success("Role updated.");
+
     fetchUsers();
-  };
+
+  } catch (error) {
+
+    console.error(error);
+
+    toast.error("Unable to update role.");
+
+  }
+
+};
+
+  const deleteUser = async (id) => {
+
+  const confirmDelete = window.confirm(
+    "Delete this user?"
+  );
+
+  if (!confirmDelete) return;
+
+  try {
+
+    await adminApi.delete(`/users/${id}`);
+
+    toast.success("User deleted.");
+
+    fetchUsers();
+
+  } catch (error) {
+
+    console.error(error);
+
+    toast.error("Unable to delete user.");
+
+  }
+
+};
 
   if (loading) {
     return (
@@ -75,6 +115,10 @@ function AdminUsers() {
 
               <th className="px-6 py-4 text-left text-white">
                 Name
+              </th>
+
+              <th className="px-6 py-4 text-left text-white">
+                Email
               </th>
 
               <th className="px-6 py-4 text-left text-white">
@@ -111,6 +155,10 @@ function AdminUsers() {
                 </td>
 
                 <td className="px-6 py-4 text-slate-300">
+                  {user.email}
+                </td>
+
+                <td className="px-6 py-4 text-slate-300">
                   {user.phone || "-"}
                 </td>
 
@@ -134,12 +182,23 @@ function AdminUsers() {
 
                 <td className="px-6 py-4 text-center">
 
-                  <button
-                    onClick={() => changeRole(user)}
-                    className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded text-white"
-                  >
-                    Change Role
-                  </button>
+                  <div className="flex justify-center gap-2">
+
+                    <button
+                      onClick={() => changeRole(user)}
+                      className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded text-white"
+                    >
+                      Change Role
+                    </button>
+
+                    <button
+                      onClick={() => deleteUser(user.id)}
+                      className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-white"
+                    >
+                      Delete
+                    </button>
+
+                  </div>
 
                 </td>
 

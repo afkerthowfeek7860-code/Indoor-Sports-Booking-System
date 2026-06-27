@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "../services/supabase";
+import adminApi from "../api/adminApi";
 import AdminSidebar from "../components/AdminSidebar";
 import AdminNavbar from "../components/AdminNavbar";
 import AdminBookings from "../components/admin/AdminBookings";
@@ -23,64 +23,15 @@ function AdminDashboard() {
   }, []);
 
   const fetchDashboardData = async () => {
-    // Fetch bookings
-    const {
-      data: bookings,
-      error: bookingError,
-    } = await supabase
-      .from("bookings")
-      .select("*");
+  try {
+    const { data } = await adminApi.get("/dashboard");
 
-    console.log("Bookings:", bookings);
-    console.log("Booking Error:", bookingError);
+    setStats(data);
 
-    // Fetch users
-    const {
-      data: users,
-      error: userError,
-    } = await supabase
-      .from("profiles")
-      .select("id");
-
-    console.log("Users:", users);
-    console.log("User Error:", userError);
-
-    const totalBookings = bookings?.length || 0;
-
-    const pendingBookings =
-      bookings?.filter(
-        (booking) =>
-          booking.booking_status === "Pending"
-      ).length || 0;
-
-    const confirmedBookings =
-      bookings?.filter(
-        (booking) =>
-          booking.booking_status === "Confirmed"
-      ).length || 0;
-
-    const cancelledBookings =
-      bookings?.filter(
-        (booking) =>
-          booking.booking_status === "Cancelled"
-      ).length || 0;
-
-    const totalRevenue =
-      bookings?.reduce(
-        (sum, booking) =>
-          sum + Number(booking.total_amount),
-        0
-      ) || 0;
-
-    setStats({
-      totalBookings,
-      pendingBookings,
-      confirmedBookings,
-      cancelledBookings,
-      totalUsers: users?.length || 0,
-      totalRevenue,
-    });
-  };
+  } catch (error) {
+    console.error("Dashboard Error:", error);
+  }
+};
 
   return (
     <div className="flex bg-slate-950 min-h-screen">
