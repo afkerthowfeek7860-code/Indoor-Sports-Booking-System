@@ -5,6 +5,7 @@ import AdminNavbar from "../components/AdminNavbar";
 import AdminBookings from "../components/admin/AdminBookings";
 import AdminTables from "../components/admin/AdminTables";
 import AdminUsers from "../components/admin/AdminUsers";
+import AdminRevenue from "../components/admin/AdminRevenue";
 
 function AdminDashboard() {
   const [active, setActive] = useState("dashboard");
@@ -135,15 +136,7 @@ function AdminDashboard() {
           )}
 
           {active === "revenue" && (
-            <div className="bg-slate-800 rounded-2xl p-12 border border-slate-700 text-center">
-              <h2 className="text-3xl font-bold text-white mb-4">
-                Revenue Analytics
-              </h2>
-
-              <p className="text-slate-400">
-                Coming in the next step...
-              </p>
-            </div>
+            <AdminRevenue />
           )}
 
         </main>

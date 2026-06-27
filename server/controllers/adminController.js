@@ -298,6 +298,133 @@ const getDashboardStats = async (req, res) => {
   }
 };
 
+  // ===============================
+// Revenue Analytics
+// ===============================
+const getRevenueAnalytics = async (req, res) => {
+
+  try {
+
+    const { data: bookings, error } = await supabase
+      .from("bookings")
+      .select(`
+        *,
+        tables!bookings_table_id_fkey(
+          table_name
+        ),
+        profiles!bookings_user_id_fkey(
+          full_name
+        )
+      `);
+
+    if (error) {
+      return res.status(400).json(error);
+    }
+
+    const today = new Date();
+
+    const todayString = today
+      .toISOString()
+      .split("T")[0];
+
+    const currentMonth = today.getMonth();
+    const currentYear = today.getFullYear();
+
+    // -----------------------
+    // Revenue Statistics
+    // -----------------------
+
+    const totalRevenue = bookings.reduce(
+      (sum, booking) =>
+        sum + Number(booking.total_amount),
+      0
+    );
+
+    const todayRevenue = bookings
+      .filter(
+        (booking) =>
+          booking.booking_date === todayString
+      )
+      .reduce(
+        (sum, booking) =>
+          sum + Number(booking.total_amount),
+        0
+      );
+
+    const monthRevenue = bookings
+      .filter((booking) => {
+
+        const date = new Date(
+          booking.booking_date
+        );
+
+        return (
+          date.getMonth() === currentMonth &&
+          date.getFullYear() === currentYear
+        );
+
+      })
+      .reduce(
+        (sum, booking) =>
+          sum + Number(booking.total_amount),
+        0
+      );
+
+    const averageBooking =
+      bookings.length > 0
+        ? Math.round(
+            totalRevenue / bookings.length
+          )
+        : 0;
+
+    // -----------------------
+    // Booking Status
+    // -----------------------
+
+    const confirmed =
+      bookings.filter(
+        (booking) =>
+          booking.booking_status ===
+          "Confirmed"
+      ).length;
+
+    const pending =
+      bookings.filter(
+        (booking) =>
+          booking.booking_status ===
+          "Pending"
+      ).length;
+
+    const cancelled =
+      bookings.filter(
+        (booking) =>
+          booking.booking_status ===
+          "Cancelled"
+      ).length;
+
+    res.json({
+      totalRevenue,
+      todayRevenue,
+      monthRevenue,
+      averageBooking,
+
+      confirmed,
+      pending,
+      cancelled,
+    });
+
+  } catch (err) {
+
+    console.error(err);
+
+    res.status(500).json({
+      message: "Internal Server Error",
+    });
+
+  }
+
+};
+
 module.exports = {
   getAllBookings,
   updateBookingStatus,
@@ -308,4 +435,5 @@ module.exports = {
   deleteUser,
 
   getDashboardStats,
+  getRevenueAnalytics,
 };

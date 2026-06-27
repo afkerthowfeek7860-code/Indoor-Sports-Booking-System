@@ -12,6 +12,7 @@ const {
   deleteUser,
 
   getDashboardStats,
+  getRevenueAnalytics,
 
 } = require("../controllers/adminController");
 
@@ -26,6 +27,11 @@ router.get("/", (req, res) => {
 router.get(
   "/dashboard",
   getDashboardStats
+);
+
+router.get(
+  "/revenue",
+  getRevenueAnalytics
 );
 
 // Booking Routes
